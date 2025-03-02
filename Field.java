@@ -25,6 +25,7 @@ public class Field {
         this.depth = depth;
         this.width = width;
         field = new Animal[depth][width];
+        
     }
 
     /**

@@ -14,8 +14,8 @@ import javafx.scene.paint.Color;
 
 public class Simulator {
 
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08; 
+    private static final double PREDATOR_CREATION_PROBABILITY = 0.02;
+    private static final double PREY_CREATION_PROBABILITY = 0.08; 
     
 
     private List<Animal> animals;
@@ -70,22 +70,46 @@ public class Simulator {
     private void populate() {
         
         Random rand = Randomizer.getRandom();
+        Random random = new Random();
+        
+        
         field.clear();
         
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                // fox placing
-                if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
-                    Predator fox = new Predator(true, field, location, Color.BROWN);
-                    animals.add(fox);
+                // predator placing
+                if(rand.nextDouble() <= PREDATOR_CREATION_PROBABILITY) {
+                    int pred_random = random.nextInt(2);
+                    if (pred_random == 0) {
+                        Location location = new Location(row, col);
+                        Tiger tiger = new Tiger(true, field, location);
+                        animals.add(tiger);
+                    }
+                    else{
+                        Location location = new Location(row, col);
+                        Wolf wolf = new Wolf(true, field, location);
+                        animals.add(wolf);
+                    }
                 }
-                //rabbit placing
-                else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
+                //Prey placing
+                else if(rand.nextDouble() <= PREY_CREATION_PROBABILITY) {
+                    int prey_random = random.nextInt(3);
                     Location location = new Location(row, col);
-                    Prey rabbit = new Prey(true, field, location, Color.GREY);
-                    animals.add(rabbit);
+                    switch (prey_random){
+                        case 0:
+                            Zebra zebra = new Zebra(true, field, location);
+                            animals.add(zebra);
+                            break;
+                        case 1:
+                            Deer deer = new Deer(true, field, location);
+                            animals.add(deer);
+                            break;
+                        default:
+                            Mouse mouse = new Mouse(true, field, location);
+                            animals.add(mouse);
+                    }
                 }
+                
                 // else leave the location empty.
             }
         }

@@ -52,11 +52,11 @@ public class Predator extends Animal {
      * @param field The field currently occupied.
      * @param newPredatores A list to return newly born Predatores.
      */
-    public void act(List<Animal> newPredatores) {
+    public void act(List<Animal> newPredators) {
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newPredatores);            
+            giveBirth(newPredators);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
