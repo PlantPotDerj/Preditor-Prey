@@ -15,7 +15,8 @@ import javafx.scene.paint.Color;
 public class Simulator {
 
     private static final double FOX_CREATION_PROBABILITY = 0.02;
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
+    private static final double RABBIT_CREATION_PROBABILITY = 0.08; 
+    
 
     private List<Animal> animals;
     private Field field;
@@ -73,14 +74,16 @@ public class Simulator {
         
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
+                // fox placing
                 if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-                    Fox fox = new Fox(true, field, location, Color.BROWN);
+                    Predator fox = new Predator(true, field, location, Color.BROWN);
                     animals.add(fox);
                 }
+                //rabbit placing
                 else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-                    Rabbit rabbit = new Rabbit(true, field, location, Color.GREY);
+                    Prey rabbit = new Prey(true, field, location, Color.GREY);
                     animals.add(rabbit);
                 }
                 // else leave the location empty.

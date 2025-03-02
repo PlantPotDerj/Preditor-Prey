@@ -5,58 +5,58 @@ import java.util.LinkedList;
 import javafx.scene.paint.Color; 
 
 /**
- * A simple model of a fox.
- * Foxes age, move, eat rabbits, and die.
+ * A simple model of a Predator.
+ * Predatores age, move, eat rabbits, and die.
  * 
  * @author David J. Barnes and Michael Kölling
  * @version 2025.02.10
  */
 
-public class Fox extends Animal {
+public class Predator extends Animal {
 
     private static final int BREEDING_AGE = 15;
     private static final int MAX_AGE = 120;
     private static final double BREEDING_PROBABILITY = 0.08;
     private static final int MAX_LITTER_SIZE = 2;
-    private static final int RABBIT_FOOD_VALUE = 9;
+    private static final int PREY_FOOD_VALUE = 9;
     private static final Random rand = Randomizer.getRandom();
     
     private int age;
     private int foodLevel;
     
     /**
-     * Create a fox. A fox can be created as a new born (age zero
+     * Create a Predator. A Predator can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
      * 
-     * @param randomAge If true, the fox will have random age and hunger level.
+     * @param randomAge If true, the Predator will have random age and hunger level.
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Fox(boolean randomAge, Field field, Location location, Color col) {
+    public Predator(boolean randomAge, Field field, Location location, Color col) {
         super(field, location, col);
         
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
+            foodLevel = rand.nextInt(PREY_FOOD_VALUE);
         }
         else {
             age = 0;
-            foodLevel = RABBIT_FOOD_VALUE;
+            foodLevel = PREY_FOOD_VALUE;
         }
     }
     
     /**
-     * This is what the fox does most of the time: it hunts for
-     * rabbits. In the process, it might breed, die of hunger,
+     * This is what the Predator does most of the time: it hunts for
+     * Preys. In the process, it might breed, die of hunger,
      * or die of old age.
      * @param field The field currently occupied.
-     * @param newFoxes A list to return newly born foxes.
+     * @param newPredatores A list to return newly born Predatores.
      */
-    public void act(List<Animal> newFoxes) {
+    public void act(List<Animal> newPredatores) {
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newFoxes);            
+            giveBirth(newPredatores);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -75,7 +75,7 @@ public class Fox extends Animal {
     }
 
     /**
-     * Increase the age. This could result in the fox's death.
+     * Increase the age. This could result in the Predator's death.
      */
     private void incrementAge() {
         age++;
@@ -85,7 +85,7 @@ public class Fox extends Animal {
     }
     
     /**
-     * Make this fox more hungry. This could result in the fox's death.
+     * Make this Predator more hungry. This could result in the Predator's death.
      */
     private void incrementHunger() {
         foodLevel--;
@@ -95,8 +95,8 @@ public class Fox extends Animal {
     }
     
     /**
-     * Look for rabbits adjacent to the current location.
-     * Only the first live rabbit is eaten.
+     * Look for Preys adjacent to the current location.
+     * Only the first live Prey is eaten.
      * @return Where food was found, or null if it wasn't.
      */
     private Location findFood() {
@@ -106,11 +106,11 @@ public class Fox extends Animal {
         while(it.hasNext()) {
             Location where = it.next();
             Object animal = field.getObjectAt(where);
-            if(animal instanceof Rabbit) {
-                Rabbit rabbit = (Rabbit) animal;
-                if(rabbit.isAlive()) { 
-                    rabbit.setDead();
-                    foodLevel = RABBIT_FOOD_VALUE;
+            if(animal instanceof Prey) {
+                Prey prey = (Prey) animal;
+                if(prey.isAlive()) { 
+                    prey.setDead();
+                    foodLevel = PREY_FOOD_VALUE;
                     return where;
                 }
             }
@@ -119,20 +119,20 @@ public class Fox extends Animal {
     }
     
     /**
-     * Check whether or not this fox is to give birth at this step.
+     * Check whether or not this Predator is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param newFoxes A list to return newly born foxes.
+     * @param newPredatores A list to return newly born Predatores.
      */
-    private void giveBirth(List<Animal> newFoxes) {
-        // New foxes are born into adjacent locations.
+    private void giveBirth(List<Animal> newPredatores) {
+        // New Predatores are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Fox young = new Fox(false, field, loc, getColor());
-            newFoxes.add(young);
+            Predator young = new Predator(false, field, loc, getColor());
+            newPredatores.add(young);
         }
     }
         
@@ -150,7 +150,7 @@ public class Fox extends Animal {
     }
 
     /**
-     * A fox can breed if it has reached the breeding age.
+     * A Predator can breed if it has reached the breeding age.
      */
     private boolean canBreed() {
         return age >= BREEDING_AGE;

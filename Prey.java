@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
  * @version 2025.02.10
  */
 
-public class Rabbit extends Animal {
+public class Prey extends Animal {
 
     private static final int BREEDING_AGE = 5;
     private static final int MAX_AGE = 40;
@@ -28,7 +28,7 @@ public class Rabbit extends Animal {
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Rabbit(boolean randomAge, Field field, Location location, Color col) {
+    public Prey(boolean randomAge, Field field, Location location, Color col) {
         super(field, location, col);
         age = 0;
         
@@ -74,7 +74,7 @@ public class Rabbit extends Animal {
      * New births will be made into free adjacent locations.
      * @param newRabbits A list to return newly born rabbits.
      */
-    private void giveBirth(List<Animal> newRabbits) {
+    private void giveBirth(List<Animal> newPreys) {
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
@@ -82,8 +82,8 @@ public class Rabbit extends Animal {
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Rabbit young = new Rabbit(false, field, loc, getColor());
-            newRabbits.add(young);
+            Prey young = new Prey(false, field, loc, getColor());
+            newPreys.add(young);
         }
     }
         

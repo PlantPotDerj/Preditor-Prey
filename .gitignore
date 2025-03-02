@@ -1,0 +1,12 @@
+# Ignore compiled Java class files
+*.class
+
+# Ignore BlueJ package and object files
+*.ctxt
+*.pkg
+
+# Ignore backup files created by BlueJ
+*.bak
+
+# Ignore BlueJ project metadata
+.bluej/
