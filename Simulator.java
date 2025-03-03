@@ -28,7 +28,6 @@ public class Simulator {
      * @param width Width of the field. Must be greater than zero.
      */
     public Simulator(int depth, int width) {
-        
         animals = new ArrayList<>();
         field = new Field(depth, width);
 
@@ -68,10 +67,8 @@ public class Simulator {
      * Randomly populate the field with foxes and rabbits.
      */
     private void populate() {
-        
         Random rand = Randomizer.getRandom();
         Random random = new Random();
-        
         
         field.clear();
         
@@ -82,7 +79,7 @@ public class Simulator {
                     int pred_random = random.nextInt(2);
                     if (pred_random == 0) {
                         Location location = new Location(row, col);
-                        Tiger tiger = new Tiger(true, field, location);
+                        Tiger tiger = new Tiger(true,field, location);
                         animals.add(tiger);
                     }
                     else{

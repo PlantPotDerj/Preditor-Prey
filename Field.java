@@ -14,7 +14,7 @@ import java.util.Random;
 public class Field {
     private static final Random rand = Randomizer.getRandom();
     private int depth, width;
-    private Animal[][] field;
+    private FieldItem[][] field;
 
     /**
      * Represent a field of the given dimensions.
@@ -24,7 +24,7 @@ public class Field {
     public Field(int depth, int width) {
         this.depth = depth;
         this.width = width;
-        field = new Animal[depth][width];
+        field = new FieldItem[depth][width];
         
     }
 
@@ -48,32 +48,32 @@ public class Field {
     }
 
     /**
-     * Place an animal at the given location.
-     * If there is already an animal at the location it will be lost.
-     * @param animal The animal to be placed.
+     * Place an FieldItem at the given location.
+     * If there is already an fieldItem at the location it will be lost.
+     * @param fieldItem The fieldItem to be placed.
      * @param row Row coordinate of the location.
      * @param col Column coordinate of the location.
      */
-    public void place(Animal animal, int row, int col) {
-        place(animal, new Location(row, col));
+    public void place(FieldItem fieldItem, int row, int col) {
+        place(fieldItem, new Location(row, col));
     }
 
     /**
-     * Place an animal at the given location.
-     * If there is already an animal at the location it will be lost.
-     * @param animal The animal to be placed.
-     * @param location Where to place the animal.
+     * Place an FieldItem at the given location.
+     * If there is already an FiedItem at the location it will be lost.
+     * @param fieldItem The fieldItem to be placed.
+     * @param location Where to place the fieldItem.
      */
-    public void place(Animal animal, Location location) {
-        field[location.getRow()][location.getCol()] = animal;
+    public void place(FieldItem fieldItem, Location location) {
+        field[location.getRow()][location.getCol()] = fieldItem;
     }
 
     /**
-     * Return the animal at the given location, if any.
+     * Return the FieldItem at the given location, if any.
      * @param location Where in the field.
      * @return The animal at the given location, or null if there is none.
      */
-    public Animal getObjectAt(Location location) {
+    public FieldItem getObjectAt(Location location) {
         return getObjectAt(location.getRow(), location.getCol());
     }
 
@@ -83,7 +83,7 @@ public class Field {
      * @param col The desired column.
      * @return The animal at the given location, or null if there is none.
      */
-    public Animal getObjectAt(int row, int col) {
+    public FieldItem getObjectAt(int row, int col) {
         return field[row][col];
     }
 
@@ -107,6 +107,7 @@ public class Field {
      * @param location The location from which to generate adjacencies.
      * @return A list of locations adjacent to that given.
      */
+    //because ive done field items i need to check that its an instance of Plants rather than null 
     public List<Location> adjacentLocations(Location location) {
         assert location != null : "Null location passed to adjacentLocations";
         
@@ -140,18 +141,21 @@ public class Field {
      * @param location Get locations adjacent to this.
      * @return A list of living neighbours
      */
-    public List<Animal> getLivingNeighbours(Location location) {
+    public List<FieldItem> getLivingNeighbours(Location location) {
 
       assert location != null : "Null location passed to adjacentLocations";
-      List<Animal> neighbours = new LinkedList<>();
+      List<FieldItem> neighbours = new LinkedList<>();
 
       if (location != null) {
         List<Location> adjLocations = adjacentLocations(location);
-
         for (Location loc : adjLocations) {
-          Animal animal = field[loc.getRow()][loc.getCol()];
-          if (animal.isAlive())
-            neighbours.add(animal);
+          FieldItem fieldItem = field[loc.getRow()][loc.getCol()];
+          if (fieldItem instanceof Animal){
+              Animal animal = (Animal) fieldItem;
+              if (animal.isAlive()){
+                neighbours.add(animal);
+              }
+          }
         }
         Collections.shuffle(neighbours, rand);
       }

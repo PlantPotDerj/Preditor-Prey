@@ -5,18 +5,13 @@ import javafx.scene.paint.Color;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Plant
+public class Plant extends FieldItem
 {
-    private Color color = Color.GREEN;
-    private Field field;
-    private Location location;
     /**
      * Constructor for objects of class Plant
      */
     public Plant(Field field, Location location)
     {
-        
-    }
-    
-    
+        super(field, location, Color.GREEN);
+    }    
 }

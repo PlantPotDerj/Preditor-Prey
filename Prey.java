@@ -17,7 +17,7 @@ public class Prey extends Animal {
     private static final double BREEDING_PROBABILITY = 0.12;
     private static final int MAX_LITTER_SIZE = 4;
     private static final Random rand = Randomizer.getRandom();
-    
+    private Field field;
     private int age;
 
     /**
@@ -30,6 +30,7 @@ public class Prey extends Animal {
      */
     public Prey(boolean randomAge, Field field, Location location, Color col) {
         super(field, location, col);
+        this.field = field;
         age = 0;
         
         if(randomAge) {
@@ -70,7 +71,7 @@ public class Prey extends Animal {
     }
     
     /**
-     * Check whether or not this rabbit is to give birth at this step.
+     * Check whether or not this prey is to give birth at this step.
      * New births will be made into free adjacent locations.
      * @param newRabbits A list to return newly born rabbits.
      */

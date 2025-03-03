@@ -15,7 +15,7 @@ public class Zebra extends Prey
      */
     public Zebra(boolean randomAge, Field field, Location location)
     {
-        super(randomAge, field,location, Color.BLACK);
+        super(randomAge, field, location, Color.BLACK);
     }
 
 

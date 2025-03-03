@@ -13,9 +13,9 @@ public class Wolf extends Predator
     /**
      * Constructor for objects of class Wolf
      */
-    public Wolf(boolean randomAge, Field field, Location location)
+    public Wolf(boolean randomAge, Field field,Location location)
     {
-        super(randomAge, field,location, Color.GREY);
+        super(randomAge, field, location, Color.GREY);
     }
 
 

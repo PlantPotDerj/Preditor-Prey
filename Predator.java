@@ -23,6 +23,7 @@ public class Predator extends Animal {
     
     private int age;
     private int foodLevel;
+    private Field field;
     
     /**
      * Create a Predator. A Predator can be created as a new born (age zero
@@ -34,7 +35,7 @@ public class Predator extends Animal {
      */
     public Predator(boolean randomAge, Field field, Location location, Color col) {
         super(field, location, col);
-        
+        this.field = field;
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
             foodLevel = rand.nextInt(PREY_FOOD_VALUE);

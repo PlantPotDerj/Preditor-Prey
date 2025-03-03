@@ -15,7 +15,7 @@ public class Tiger extends Predator
      */
     public Tiger(boolean randomAge, Field field, Location location)
     {
-        super(randomAge, field,location, Color.ORANGE);
+        super(randomAge, field, location, Color.ORANGE);
     }
 
 

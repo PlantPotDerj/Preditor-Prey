@@ -8,11 +8,9 @@ import javafx.scene.paint.Color;
  * @version 2025.02.10
  */
 
-public abstract class Animal {
+public abstract class Animal extends FieldItem {
     
     private boolean alive;
-    private Field field;
-    private Location location;
     private Color color = Color.BLACK;
     
     /**
@@ -22,11 +20,10 @@ public abstract class Animal {
      * @param location The location within the field.
      */
     
-    public Animal(Field field, Location location, Color col) {
+    public Animal(Field field, Location location, Color col){
+        super(field, location, col);
         alive = true;
-        this.field = field;
         setLocation(location);
-        setColor(col);
     }
     
     /**
@@ -50,52 +47,13 @@ public abstract class Animal {
      */
     protected void setDead() {
         alive = false;
+        Location location = getLocation();
+        Field field = getField();
         if(location != null) {
             field.clear(location);
             location = null;
             field = null;
         }
     }
-
-    /**
-     * Return the animal's location.
-     * @return The animal's location.
-     */
-    protected Location getLocation() {
-        return location;
-    }
     
-    /**
-     * Place the animal at the new location in the given field.
-     * @param newLocation The animal's new location.
-     */
-    protected void setLocation(Location newLocation) {
-        if(location != null) {
-            field.clear(location);
-        }
-        location = newLocation;
-        field.place(this, newLocation);
-    }
-    
-    /**
-     * Return the animal's field.
-     * @return The animal's field.
-     */
-    protected Field getField() {
-        return field;
-    }
-    
-    /**
-     * Changes the color of the animal
-     */
-    public void setColor(Color col) {
-        color = col;
-    }
-
-    /**
-     * Returns the animal's color
-     */
-    public Color getColor() {
-        return color;
-    }   
 }

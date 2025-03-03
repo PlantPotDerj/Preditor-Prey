@@ -91,18 +91,27 @@ public class SimulatorView extends Application {
     public void updateCanvas(int generation, Field field) {
         genLabel.setText(GENERATION_PREFIX + generation);
         stats.reset();
-        
+        System.out.println("i work");
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
-                Animal animal = field.getObjectAt(row, col);
-        
-                if (animal != null && animal.isAlive()) {
-                    stats.incrementCount(animal.getClass());
-                    fieldCanvas.drawMark(col, row, animal.getColor());
+                FieldItem fieldItem = field.getObjectAt(row, col);
+                if (fieldItem instanceof Animal){
+                    Animal animal = (Animal) fieldItem;
+                    if (animal != null && animal.isAlive()) {
+                        stats.incrementCount(animal.getClass());
+                        fieldCanvas.drawMark(col, row, animal.getColor());
+                        
+                    }
+                    continue;
                 }
-                else {
-                    fieldCanvas.drawMark(col, row, EMPTY_COLOR);
+                if (fieldItem instanceof Plant){
+                    Plant plant = (Plant) fieldItem;
+                    if (plant !=null){
+                        fieldCanvas.drawMark(col, row, plant.getColor());
+                    } 
+                    continue;
                 }
+                fieldCanvas.drawMark(col, row, EMPTY_COLOR);
             }
         }
         
