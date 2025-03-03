@@ -13,11 +13,6 @@ import javafx.scene.paint.Color;
  */
 
 public class Predator extends Animal {
-
-    private static final int BREEDING_AGE = 15;
-    private static final int MAX_AGE = 120;
-    private static final double BREEDING_PROBABILITY = 0.08;
-    private static final int MAX_LITTER_SIZE = 2;
     private static final int PREY_FOOD_VALUE = 9;
     private static final Random rand = Randomizer.getRandom();
     
@@ -36,8 +31,14 @@ public class Predator extends Animal {
     public Predator(boolean randomAge, Field field, Location location, Color col) {
         super(field, location, col);
         this.field = field;
+        
+        setFoodValue(0);
+        setMaxAge(20);
+        setBreedingAge(8);
+        //thease are defaults they get overwritten
+        
         if(randomAge) {
-            age = rand.nextInt(MAX_AGE);
+            age = rand.nextInt(getMaxAge());
             foodLevel = rand.nextInt(PREY_FOOD_VALUE);
         }
         else {
@@ -55,9 +56,9 @@ public class Predator extends Animal {
      */
     public void act(List<Animal> newPredators) {
         incrementAge();
-        incrementHunger();
+        incrementHunger(1);// might change for metabolism
         if(isAlive()) {
-            giveBirth(newPredators);            
+            //giveBirth(newPredators);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -71,29 +72,12 @@ public class Predator extends Animal {
             else {
                 // Overcrowding.
                 setDead();
+                System.out.println("OVERCROWDING DEATH PRED");
             }
         }
     }
 
-    /**
-     * Increase the age. This could result in the Predator's death.
-     */
-    private void incrementAge() {
-        age++;
-        if(age > MAX_AGE) {
-            setDead();
-        }
-    }
     
-    /**
-     * Make this Predator more hungry. This could result in the Predator's death.
-     */
-    private void incrementHunger() {
-        foodLevel--;
-        if(foodLevel <= 0) {
-            setDead();
-        }
-    }
     
     /**
      * Look for Preys adjacent to the current location.
@@ -106,11 +90,13 @@ public class Predator extends Animal {
         Iterator<Location> it = adjacent.iterator();
         while(it.hasNext()) {
             Location where = it.next();
-            Object animal = field.getObjectAt(where);
+            FieldItem animal = field.getObjectAt(where);
             if(animal instanceof Prey) {
                 Prey prey = (Prey) animal;
                 if(prey.isAlive()) { 
+                    System.out.println("PRED KILLED PREY");
                     prey.setDead();
+                    field.clear(where);
                     foodLevel = PREY_FOOD_VALUE;
                     return where;
                 }
@@ -144,8 +130,8 @@ public class Predator extends Animal {
      */
     private int breed() {
         int births = 0;
-        if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
-            births = rand.nextInt(MAX_LITTER_SIZE) + 1;
+        if(canBreed() && rand.nextDouble() <= getBreedingProbability()) {
+            births = rand.nextInt(getMaxLitterSize()) + 1;
         }
         return births;
     }
@@ -154,6 +140,6 @@ public class Predator extends Animal {
      * A Predator can breed if it has reached the breeding age.
      */
     private boolean canBreed() {
-        return age >= BREEDING_AGE;
+        return age >= getBreedingAge();
     }
 }

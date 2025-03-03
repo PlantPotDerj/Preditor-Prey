@@ -187,7 +187,8 @@ public class Field {
         List<Location> free = new LinkedList<>();
         List<Location> adjacent = adjacentLocations(location);
         for(Location next : adjacent) {
-            if(getObjectAt(next) == null) {
+            FieldItem fieldItem = getObjectAt(next);
+            if(fieldItem == null || fieldItem instanceof Plant ) {
                 free.add(next);
             }
         }

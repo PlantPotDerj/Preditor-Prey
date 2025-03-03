@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Random;
+import java.util.Iterator;
 import javafx.scene.paint.Color; 
 
 /**
@@ -11,20 +12,16 @@ import javafx.scene.paint.Color;
  */
 
 public class Prey extends Animal {
-
-    private static final int BREEDING_AGE = 5;
-    private static final int MAX_AGE = 40;
-    private static final double BREEDING_PROBABILITY = 0.12;
-    private static final int MAX_LITTER_SIZE = 4;
     private static final Random rand = Randomizer.getRandom();
+    private int foodLevel;
     private Field field;
     private int age;
 
     /**
-     * Create a new rabbit. A rabbit may be created with age
+     * Create a new Prey. A prey may be created with age
      * zero (a new born) or with a random age.
      * 
-     * @param randomAge If true, the rabbit will have a random age.
+     * @param randomAge If true, the prey will have a random age.
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
@@ -33,47 +30,52 @@ public class Prey extends Animal {
         this.field = field;
         age = 0;
         
+        setFoodValue(5);
+        setMaxAge(10);
+        setBreedingAge(3);
+        //this is a default it gets overwritten
+        
+        foodLevel = 10;
         if(randomAge) {
-            age = rand.nextInt(MAX_AGE);
+            age = rand.nextInt(getMaxAge());
         }
     }
     
     /**
-     * This is what the rabbit does most of the time - it runs 
-     * around. Sometimes it will breed or die of old age.
-     * @param newRabbits A list to return newly born rabbits.
+     * This is what the prey does most of the time - it runs 
+     * around. Sometimes it will breed or die of old age.or eat food 
+     * @param newRabbits A list to return newly born prey.
      */
-    public void act(List<Animal> newRabbits) {
+    public void act(List<Animal> newPrey) {
         incrementAge();
         if(isAlive()) {
-            giveBirth(newRabbits);            
+            //
+            //giveBirth(newPrey);            
             // Try to move into a free location.
+            Location foodLocation = findFood();
+            if (foodLocation != null){
+                 int nutritionValue = field.getObjectAt(foodLocation).getFoodValue();
+                 setLocation(foodLocation);
+                 decrementHunger(nutritionValue);
+                 //System.out.println("prey ate plant");
+            }
             Location newLocation = getField().getFreeAdjacentLocation(getLocation());
-            if(newLocation != null) {
+            
+            if(newLocation != null ) {
                 setLocation(newLocation);
             }
             else {
                 // Overcrowding.
                 setDead();
+                System.out.println("OVERCROWDING DEATH PREY");
             }
-        }
-    }
-
-    /**
-     * Increase the age.
-     * This could result in the rabbit's death.
-     */
-    private void incrementAge() {
-        age++;
-        if(age > MAX_AGE) {
-            setDead();
         }
     }
     
     /**
      * Check whether or not this prey is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param newRabbits A list to return newly born rabbits.
+     * @param newPreys A list to return newly born prey.
      */
     private void giveBirth(List<Animal> newPreys) {
         // New rabbits are born into adjacent locations.
@@ -95,17 +97,36 @@ public class Prey extends Animal {
      */
     private int breed() {
         int births = 0;
-        if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
-            births = rand.nextInt(MAX_LITTER_SIZE) + 1;
+        if(canBreed() && rand.nextDouble() <= getBreedingProbability()) {
+            births = rand.nextInt(getMaxLitterSize()) + 1;
         }
         return births;
     }
 
     /**
-     * A rabbit can breed if it has reached the breeding age.
-     * @return true if the rabbit can breed, false otherwise.
+     * A prey can breed if it has reached the breeding age.
+     * @return true if the prey can breed, false otherwise.
      */
     private boolean canBreed() {
-        return age >= BREEDING_AGE;
+        return age >= getBreedingAge();
+    }
+    
+    /**
+     * Look for Preys adjacent to the current location.
+     * Only the first live Prey is eaten.
+     * @return Where food was found, or null if it wasn't.
+     */
+    private Location findFood() {
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            FieldItem fieldItem = field.getObjectAt(where);
+            if(fieldItem instanceof Plant) {
+                return where;
+            }
+        }
+        return null;
     }
 }

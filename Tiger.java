@@ -1,22 +1,23 @@
 import javafx.scene.paint.Color; 
 /**
- * Write a description of class Tiger here.
+ * Tiger class, sets maxAge, BreedingAge, Breeding porbabilit, Max Litter Size,
  *
  * @author (your name)
  * @version (a version number or a date)
  */
 public class Tiger extends Predator
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
     /**
      * Constructor for objects of class Tiger
      */
     public Tiger(boolean randomAge, Field field, Location location)
     {
         super(randomAge, field, location, Color.ORANGE);
+        setMaxAge(20);
+        setBreedingAge(6);
+        setBreedingProbability(0.08);
+        setMaxLitterSize(1);
     }
-
+    
 
 }

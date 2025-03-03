@@ -8,9 +8,10 @@ import javafx.scene.paint.Color;
 public class FieldItem
 {
     // instance variables - replace the example below with your own
-    private Field field;
-    private Location location;
-    private Color color;
+    private Field field = null;
+    private Location location = null;
+    private Color color = Color.PINK;
+    private int foodValue = 5;
 
     /**
      * Constructor for objects of class FieldItem
@@ -41,7 +42,6 @@ public class FieldItem
         color = col;
     }
     
-
     /**
      * Returns the fieldItems color
      */
@@ -57,13 +57,20 @@ public class FieldItem
         return field;
     }
     
-    
      /**
      * Return the animal's location.
      * @return The animal's location.
      */
     public Location getLocation() {
         return location;
+    }
+    
+    public void setFoodValue(int value){
+        foodValue = value;
+    }
+    
+    public int getFoodValue(){
+        return foodValue;
     }
     
 }

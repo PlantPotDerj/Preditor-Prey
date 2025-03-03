@@ -29,16 +29,19 @@ public class FieldStats {
      */
     public String getPopulationDetails(Field field) {
         StringBuffer buffer = new StringBuffer();
+        int i = 0;
         if (!countsValid) {
             generateCounts(field);
         }
         for (Class key : counters.keySet()) {
             Counter info = counters.get(key);
+            i += info.getCount();
             buffer.append(info.getName());
             buffer.append(": ");
             buffer.append(info.getCount());
             buffer.append(' ');
         }
+        buffer.append(" total animals : " +i);
         return buffer.toString();
     }
 

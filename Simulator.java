@@ -14,7 +14,7 @@ import javafx.scene.paint.Color;
 
 public class Simulator {
 
-    private static final double PREDATOR_CREATION_PROBABILITY = 0.02;
+    private static final double PREDATOR_CREATION_PROBABILITY = 0.02;//changed from .02 to 0 testing
     private static final double PREY_CREATION_PROBABILITY = 0.08; 
     
 
@@ -64,7 +64,7 @@ public class Simulator {
     }
     
     /**
-     * Randomly populate the field with foxes and rabbits.
+     * Randomly populate the field with predator prey and plants
      */
     private void populate() {
         Random rand = Randomizer.getRandom();
@@ -74,24 +74,23 @@ public class Simulator {
         
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
+                Location location = new Location(row, col);
                 // predator placing
                 if(rand.nextDouble() <= PREDATOR_CREATION_PROBABILITY) {
                     int pred_random = random.nextInt(2);
                     if (pred_random == 0) {
-                        Location location = new Location(row, col);
                         Tiger tiger = new Tiger(true,field, location);
                         animals.add(tiger);
                     }
                     else{
-                        Location location = new Location(row, col);
                         Wolf wolf = new Wolf(true, field, location);
                         animals.add(wolf);
                     }
+                    continue;
                 }
                 //Prey placing
-                else if(rand.nextDouble() <= PREY_CREATION_PROBABILITY) {
+                if(rand.nextDouble() <= PREY_CREATION_PROBABILITY) {
                     int prey_random = random.nextInt(3);
-                    Location location = new Location(row, col);
                     switch (prey_random){
                         case 0:
                             Zebra zebra = new Zebra(true, field, location);
@@ -105,12 +104,16 @@ public class Simulator {
                             Mouse mouse = new Mouse(true, field, location);
                             animals.add(mouse);
                     }
+                    continue;
                 }
+                // else place plant
                 
-                // else leave the location empty.
+                Plant plant  = new Plant(field, location);
             }
         }
     }
+    
+    
     
     /**
      * Pause for a given time.

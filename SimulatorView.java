@@ -91,7 +91,6 @@ public class SimulatorView extends Application {
     public void updateCanvas(int generation, Field field) {
         genLabel.setText(GENERATION_PREFIX + generation);
         stats.reset();
-        System.out.println("i work");
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
                 FieldItem fieldItem = field.getObjectAt(row, col);

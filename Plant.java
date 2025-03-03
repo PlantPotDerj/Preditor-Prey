@@ -13,5 +13,7 @@ public class Plant extends FieldItem
     public Plant(Field field, Location location)
     {
         super(field, location, Color.GREEN);
-    }    
+        setFoodValue(1);
+    }
+    
 }
