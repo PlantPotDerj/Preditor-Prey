@@ -12,7 +12,7 @@ public class Deer extends Prey
      */
     public Deer(boolean randomAge, Field field, Location location)
     {
-        super(randomAge,field, location, Color.PURPLE);
+        super(randomAge,field, location, Color.PURPLE, AnimalType.Deer);
         setFoodValue(2);
         //setAge(11);
         setMaxAge(12);

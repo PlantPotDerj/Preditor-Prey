@@ -71,7 +71,7 @@ public class Simulator {
         Random random = new Random();
         
         field.clear();
-        boolean isDebugging = true;
+        boolean isDebugging = false;
         
         if(isDebugging == false){
             for(int row = 0; row < field.getDepth(); row++) {
@@ -114,12 +114,12 @@ public class Simulator {
                 }
             }
         }else{
-            Zebra zebra = new Zebra(true, field, new Location(0,0));
-            animals.add(zebra);
+            //Zebra zebra = new Zebra(true, field, new Location(0,0));
+            //animals.add(zebra);
             
             Plant plant  = new Plant(field, new Location(0,2));
-            //Tiger tiger = new Tiger(true,field, new Location(0,1));
-            //animals.add(tiger);
+            Tiger tiger = new Tiger(true,field, new Location(0,1));
+            animals.add(tiger);
         }
     }
     

@@ -1,5 +1,6 @@
 import java.util.List;
 import javafx.scene.paint.Color; 
+import java.util.Random;
 
 /**
  * A class representing shared characteristics of animals.
@@ -18,6 +19,9 @@ public abstract class Animal extends FieldItem {
     private int breedingAge = 10;
     private double breedingProbabiltiy = 0.05;
     private int maxLitterSize = 2;
+    private AnimalType animalType = null;
+    public enum  AnimalType {Tiger, Deer, Mouse, Wolf, Zebra};
+    public static final Random rand = Randomizer.getRandom();
        
     //how nutritional the animal is default for predator is 0 
     
@@ -29,9 +33,10 @@ public abstract class Animal extends FieldItem {
      * @param col the color of the animal 
      */
     
-    public Animal(Field field, Location location, Color col){
+    public Animal(Field field, Location location, Color col, AnimalType animalType){
         super(field, location, col);
         alive = true;
+        this.animalType = animalType;
         setLocation(location);
     }
     
@@ -68,6 +73,59 @@ public abstract class Animal extends FieldItem {
             field = null;
         }
         Plant plant = new Plant(lastFieldBeforeDeath, lastLocationBeforeDeath);
+    }
+    
+    public void giveBirth(List<Animal> newPreys) {
+        // New rabbits are born into adjacent locations.
+        // Get a list of adjacent free locations.
+        Field field = getField();
+        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        int births = breed();
+        for(int b = 0; b < births && free.size() > 0; b++) {
+            Location loc = free.remove(0);
+            switch (animalType){
+                case (AnimalType.Tiger):
+                    Tiger tiger = new Tiger(true,field, loc);
+                    newPreys.add(tiger);
+                    break;
+                case (AnimalType.Wolf):
+                    Wolf wolf = new Wolf(true,field, loc);
+                    newPreys.add(wolf);
+                    break;
+                case (AnimalType.Zebra):
+                    Zebra zebra = new Zebra(true,field, loc);
+                    newPreys.add(zebra);
+                    break;
+                case (AnimalType.Deer):
+                    Deer deer = new Deer(true,field, loc);
+                    newPreys.add(deer);
+                    break;
+                default:
+                    Mouse mouse = new Mouse(true,field, loc);
+                    newPreys.add(mouse);
+            }
+        }
+    }
+    
+    /**
+     * Generate a number representing the number of births,
+     * if it can breed.
+     * @return The number of births (may be zero).
+     */
+    private int breed() {
+        int births = 0;
+        if(canBreed() && rand.nextDouble() <= getBreedingProbability()) {
+            births = rand.nextInt(getMaxLitterSize()) + 1;
+        }
+        return births;
+    }
+
+    /**
+     * A prey can breed if it has reached the breeding age.
+     * @return true if the prey can breed, false otherwise.
+     */
+    private boolean canBreed() {
+        return age >= breedingAge;
     }
     
     /**
@@ -138,6 +196,10 @@ public abstract class Animal extends FieldItem {
     
     public void setAge(int value){
         age = value;
+    }
+    
+    public AnimalType getAnimalType(){
+        return animalType;
     }
     
 }

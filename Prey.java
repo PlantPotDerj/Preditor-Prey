@@ -12,10 +12,11 @@ import javafx.scene.paint.Color;
  */
 
 public class Prey extends Animal {
-    private static final Random rand = Randomizer.getRandom();
+    //private static final Random rand = Randomizer.getRandom();
     private int foodLevel;
     private Field field;
     private int age;
+    
 
     /**
      * Create a new Prey. A prey may be created with age
@@ -25,8 +26,8 @@ public class Prey extends Animal {
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Prey(boolean randomAge, Field field, Location location, Color col) {
-        super(field, location, col);
+    public Prey(boolean randomAge, Field field, Location location, Color col, AnimalType animalType) {
+        super(field, location, col, animalType);
         this.field = field;
         age = 0;
         setFoodValue(5);
@@ -46,7 +47,7 @@ public class Prey extends Animal {
     public void act(List<Animal> newPrey) {
         incrementAge();
         if(isAlive()) {
-            //giveBirth(newPrey);            
+            giveBirth(newPrey);            
             // Try to move into a free location.
             Location foodLocation = findFood();
             if (foodLocation != null){
@@ -70,44 +71,7 @@ public class Prey extends Animal {
         }
     }
     
-    /**
-     * Check whether or not this prey is to give birth at this step.
-     * New births will be made into free adjacent locations.
-     * @param newPreys A list to return newly born prey.
-     */
-    private void giveBirth(List<Animal> newPreys) {
-        // New rabbits are born into adjacent locations.
-        // Get a list of adjacent free locations.
-        Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
-        int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            Prey young = new Prey(false, field, loc, getColor());
-            newPreys.add(young);
-        }
-    }
-        
-    /**
-     * Generate a number representing the number of births,
-     * if it can breed.
-     * @return The number of births (may be zero).
-     */
-    private int breed() {
-        int births = 0;
-        if(canBreed() && rand.nextDouble() <= getBreedingProbability()) {
-            births = rand.nextInt(getMaxLitterSize()) + 1;
-        }
-        return births;
-    }
-
-    /**
-     * A prey can breed if it has reached the breeding age.
-     * @return true if the prey can breed, false otherwise.
-     */
-    private boolean canBreed() {
-        return age >= getBreedingAge();
-    }
+    
     
     /**
      * Look for Preys adjacent to the current location.

@@ -12,7 +12,7 @@ public class Wolf extends Predator
      */
     public Wolf(boolean randomAge, Field field,Location location)
     {
-        super(randomAge, field, location, Color.GREY);
+        super(randomAge, field, location, Color.GREY, AnimalType.Wolf);
         setMaxAge(18);
         setBreedingAge(13);
         setBreedingProbability(0.15);

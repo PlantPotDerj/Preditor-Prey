@@ -28,8 +28,8 @@ public class Predator extends Animal {
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Predator(boolean randomAge, Field field, Location location, Color col) {
-        super(field, location, col);
+    public Predator(boolean randomAge, Field field, Location location, Color col, AnimalType animalType) {
+        super(field, location, col, animalType);
         this.field = field;
         
         setFoodValue(0);
@@ -58,7 +58,7 @@ public class Predator extends Animal {
         incrementAge();
         incrementHunger(1);// might change for metabolism
         if(isAlive()) {
-            //giveBirth(newPredators);            
+            giveBirth(newPredators);            
             Location newLocation = findFood();
             if(newLocation == null) { 
                 // No food found - try to move to a free location.
@@ -101,41 +101,4 @@ public class Predator extends Animal {
         return null;
     }
     
-    /**
-     * Check whether or not this Predator is to give birth at this step.
-     * New births will be made into free adjacent locations.
-     * @param newPredatores A list to return newly born Predatores.
-     */
-    private void giveBirth(List<Animal> newPredatores) {
-        // New Predatores are born into adjacent locations.
-        // Get a list of adjacent free locations.
-        Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
-        int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            Predator young = new Predator(false, field, loc, getColor());
-            newPredatores.add(young);
-        }
-    }
-        
-    /**
-     * Generate a number representing the number of births,
-     * if it can breed.
-     * @return The number of births (may be zero).
-     */
-    private int breed() {
-        int births = 0;
-        if(canBreed() && rand.nextDouble() <= getBreedingProbability()) {
-            births = rand.nextInt(getMaxLitterSize()) + 1;
-        }
-        return births;
-    }
-
-    /**
-     * A Predator can breed if it has reached the breeding age.
-     */
-    private boolean canBreed() {
-        return age >= getBreedingAge();
-    }
 }
