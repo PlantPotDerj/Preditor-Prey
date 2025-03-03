@@ -71,47 +71,58 @@ public class Simulator {
         Random random = new Random();
         
         field.clear();
+        boolean isDebugging = true;
         
-        for(int row = 0; row < field.getDepth(); row++) {
-            for(int col = 0; col < field.getWidth(); col++) {
-                Location location = new Location(row, col);
-                // predator placing
-                if(rand.nextDouble() <= PREDATOR_CREATION_PROBABILITY) {
-                    int pred_random = random.nextInt(2);
-                    if (pred_random == 0) {
-                        Tiger tiger = new Tiger(true,field, location);
-                        animals.add(tiger);
+        if(isDebugging == false){
+            for(int row = 0; row < field.getDepth(); row++) {
+                for(int col = 0; col < field.getWidth(); col++) {
+                    Location location = new Location(row, col);
+                    // predator placing
+                    if(rand.nextDouble() <= PREDATOR_CREATION_PROBABILITY) {
+                        int pred_random = random.nextInt(2);
+                        if (pred_random == 0) {
+                            Tiger tiger = new Tiger(true,field, location);
+                            animals.add(tiger);
+                        }
+                        else{
+                            Wolf wolf = new Wolf(true, field, location);
+                            animals.add(wolf);
+                        }
+                        continue;
                     }
-                    else{
-                        Wolf wolf = new Wolf(true, field, location);
-                        animals.add(wolf);
+                    //Prey placing
+                    if(rand.nextDouble() <= PREY_CREATION_PROBABILITY) {
+                        int prey_random = random.nextInt(3);
+                        switch (prey_random){
+                            case 0:
+                                Zebra zebra = new Zebra(true, field, location);
+                                animals.add(zebra);
+                                break;
+                            case 1:
+                                Deer deer = new Deer(true, field, location);
+                                animals.add(deer);
+                                break;
+                            default:
+                                Mouse mouse = new Mouse(true, field, location);
+                                animals.add(mouse);
+                        }
+                        continue;
                     }
-                    continue;
+                    // else place plant
+                    
+                    Plant plant  = new Plant(field, location);
                 }
-                //Prey placing
-                if(rand.nextDouble() <= PREY_CREATION_PROBABILITY) {
-                    int prey_random = random.nextInt(3);
-                    switch (prey_random){
-                        case 0:
-                            Zebra zebra = new Zebra(true, field, location);
-                            animals.add(zebra);
-                            break;
-                        case 1:
-                            Deer deer = new Deer(true, field, location);
-                            animals.add(deer);
-                            break;
-                        default:
-                            Mouse mouse = new Mouse(true, field, location);
-                            animals.add(mouse);
-                    }
-                    continue;
-                }
-                // else place plant
-                
-                Plant plant  = new Plant(field, location);
             }
+        }else{
+            Zebra zebra = new Zebra(true, field, new Location(0,0));
+            animals.add(zebra);
+            
+            Plant plant  = new Plant(field, new Location(0,2));
+            //Tiger tiger = new Tiger(true,field, new Location(0,1));
+            //animals.add(tiger);
         }
     }
+    
     
     
     

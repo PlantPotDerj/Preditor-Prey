@@ -13,6 +13,7 @@ public class Zebra extends Prey
     {
         super(randomAge, field, location, Color.BLUE);
         setFoodValue(3);
+        //setAge(10);
         setMaxAge(11);
         setBreedingAge(4);
         setBreedingProbability(0.10);

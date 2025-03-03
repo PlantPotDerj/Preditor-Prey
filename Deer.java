@@ -14,6 +14,7 @@ public class Deer extends Prey
     {
         super(randomAge,field, location, Color.PURPLE);
         setFoodValue(2);
+        //setAge(11);
         setMaxAge(12);
         setBreedingAge(8);
         setBreedingProbability(0.12);

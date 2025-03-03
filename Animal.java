@@ -33,7 +33,6 @@ public abstract class Animal extends FieldItem {
         super(field, location, col);
         alive = true;
         setLocation(location);
-        
     }
     
     /**
@@ -56,18 +55,19 @@ public abstract class Animal extends FieldItem {
      * It is removed from the field.
      */
     protected void setDead() {
-        //System.out.println("ANIMAL DIED");
         alive = false;
         Location location = getLocation();
-        Location temporaryLocation = location;
         Field field = getField();
-        //Field temporaryField = field;
+        Location lastLocationBeforeDeath = null;
+        Field lastFieldBeforeDeath = null;
         if(location != null) {
+            lastLocationBeforeDeath = location;
+            lastFieldBeforeDeath = field;
             field.clear(location);
             location = null;
             field = null;
         }
-        //Plant plant = new Plant(temporaryField, location);
+        Plant plant = new Plant(lastFieldBeforeDeath, lastLocationBeforeDeath);
     }
     
     /**
@@ -134,6 +134,10 @@ public abstract class Animal extends FieldItem {
     
     public int getMaxLitterSize(){
         return maxLitterSize; 
-    }        
+    }
+    
+    public void setAge(int value){
+        age = value;
+    }
     
 }

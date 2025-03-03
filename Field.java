@@ -25,7 +25,6 @@ public class Field {
         this.depth = depth;
         this.width = width;
         field = new FieldItem[depth][width];
-        
     }
 
     /**
@@ -120,7 +119,6 @@ public class Field {
                 if (nextRow >= 0 && nextRow < depth) {
                     for (int coffset = -1; coffset <= 1; coffset++) {
                         int nextCol = col + coffset;
-                        
                         // Exclude invalid locations and the original location.
                         if (nextCol >= 0 && nextCol < width && (roffset != 0 || coffset != 0)) {
                             locations.add(new Location(nextRow, nextCol));

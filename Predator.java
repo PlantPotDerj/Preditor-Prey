@@ -59,14 +59,13 @@ public class Predator extends Animal {
         incrementHunger(1);// might change for metabolism
         if(isAlive()) {
             //giveBirth(newPredators);            
-            // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
                 // No food found - try to move to a free location.
                 newLocation = getField().getFreeAdjacentLocation(getLocation());
             }
-            // See if it was possible to move.
             if(newLocation != null) {
+                // Found prey, take location of prey (kill it)
                 setLocation(newLocation);
             }
             else {
@@ -76,8 +75,6 @@ public class Predator extends Animal {
             }
         }
     }
-
-    
     
     /**
      * Look for Preys adjacent to the current location.
@@ -96,7 +93,6 @@ public class Predator extends Animal {
                 if(prey.isAlive()) { 
                     System.out.println("PRED KILLED PREY");
                     prey.setDead();
-                    field.clear(where);
                     foodLevel = PREY_FOOD_VALUE;
                     return where;
                 }

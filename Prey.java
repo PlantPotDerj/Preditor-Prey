@@ -29,12 +29,9 @@ public class Prey extends Animal {
         super(field, location, col);
         this.field = field;
         age = 0;
-        
         setFoodValue(5);
         setMaxAge(10);
         setBreedingAge(3);
-        //this is a default it gets overwritten
-        
         foodLevel = 10;
         if(randomAge) {
             age = rand.nextInt(getMaxAge());
@@ -49,15 +46,16 @@ public class Prey extends Animal {
     public void act(List<Animal> newPrey) {
         incrementAge();
         if(isAlive()) {
-            //
             //giveBirth(newPrey);            
             // Try to move into a free location.
             Location foodLocation = findFood();
             if (foodLocation != null){
-                 int nutritionValue = field.getObjectAt(foodLocation).getFoodValue();
-                 setLocation(foodLocation);
-                 decrementHunger(nutritionValue);
-                 //System.out.println("prey ate plant");
+                // found plant, move to it (Eat it)
+                setLocation(foodLocation);
+                
+                int nutritionValue = field.getObjectAt(foodLocation).getFoodValue();
+                decrementHunger(nutritionValue);
+                //System.out.println("prey ate plant");
             }
             Location newLocation = getField().getFreeAdjacentLocation(getLocation());
             
