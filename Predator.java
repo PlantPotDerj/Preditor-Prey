@@ -58,7 +58,10 @@ public class Predator extends Animal {
         incrementAge();
         incrementHunger(1);// might change for metabolism
         if(isAlive()) {
-            giveBirth(newPredators);            
+            giveBirth(newPredators);
+            catchRandomDisease();
+            //spreadDisease();
+            
             Location newLocation = findFood();
             if(newLocation == null) { 
                 // No food found - try to move to a free location.

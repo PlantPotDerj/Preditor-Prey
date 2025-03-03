@@ -117,6 +117,11 @@ public class Simulator {
             Zebra zebra = new Zebra(true, field, new Location(0,0));
             animals.add(zebra);
             
+            Zebra zebra1 = new Zebra(true, field, new Location(0,1));
+            animals.add(zebra1);
+            //Deer deer = new Deer(true, field, new Location(0,2));
+            //animals.add(deer);
+            
             //Plant plant  = new Plant(field, new Location(0,2));
             //Tiger tiger = new Tiger(true,field, new Location(0,1));
             //animals.add(tiger);

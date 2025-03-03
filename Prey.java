@@ -45,10 +45,14 @@ public class Prey extends Animal {
      * @param newRabbits A list to return newly born prey.
      */
     public void act(List<Animal> newPrey) {
+        super.act(newPrey);
         incrementAge();
         incrementHunger(1);
         if(isAlive()) {
-            giveBirth(newPrey);            
+            giveBirth(newPrey);
+            catchRandomDisease();
+            spreadDisease();
+            
             // Try to move into a free location.
             Location foodLocation = findFood();
             if (foodLocation != null){

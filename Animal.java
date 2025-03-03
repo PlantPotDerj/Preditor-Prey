@@ -1,6 +1,7 @@
 import java.util.List;
 import javafx.scene.paint.Color; 
 import java.util.Random;
+import java.util.Iterator;
 
 /**
  * A class representing shared characteristics of animals.
@@ -14,10 +15,14 @@ public abstract class Animal extends FieldItem {
     private boolean alive;
     private Color color = Color.BLUE;
     private int age = 0;
+    private int stepsBeforeDiseasedDeath = 5;
+    private int stepsCounter = 0;
     private int foodLevel = 10;
     private int maxAge = 20;
     private int breedingAge = 10;
     private double breedingProbabiltiy = 0.05;
+    private double diseasedProbabiltiy = 0.02;//changed from 0.22 to 0
+    private boolean diseased = false;
     private int maxLitterSize = 2;
     private AnimalType animalType = null;
     public enum  AnimalType {Tiger, Deer, Mouse, Wolf, Zebra};
@@ -45,7 +50,20 @@ public abstract class Animal extends FieldItem {
      * whatever it wants/needs to do.
      * @param newAnimals A list to receive newly born animals.
      */
-    abstract public void act(List<Animal> newAnimals);
+    public void act(List<Animal> newAnimals){
+        if (diseased){
+            if (stepsCounter < stepsBeforeDiseasedDeath){
+                stepsCounter ++;
+                //System.out.println(stepsCounter);
+            }else{
+                stepsCounter = 0;
+                //System.out.println("TIMES UP ANIMAL DIED");
+                setDead();
+            }
+        }
+        
+    }
+        
 
     /**
      * Check whether the animal is alive or not.
@@ -162,6 +180,41 @@ public abstract class Animal extends FieldItem {
         }
     }
     
+    public void catchRandomDisease(){
+        if (!diseased){
+            Random rand = Randomizer.getRandom();
+            Random random = new Random();
+            
+            if(rand.nextDouble() >= diseasedProbabiltiy){
+                diseased = true;
+                System.out.println("Animal is diseased");
+            }
+        }
+    }
+    
+    public void spreadDisease(){
+        if (diseased){
+            Random rand = Randomizer.getRandom();
+            Random random = new Random();
+            
+            //if(rand.nextDouble() >= diseasedProbabiltiy){
+                List<FieldItem> NeighbourFieldItems = getField().getLivingNeighbours(getLocation());
+                if(!NeighbourFieldItems.isEmpty())
+                {
+                    for (FieldItem fieldItem : NeighbourFieldItems) {
+                        if (fieldItem instanceof Animal){
+                            Animal animal = (Animal) fieldItem;
+                            if (animal.getAnimalType() == animalType){
+                                animal.setDiseased(true);
+                                System.out.println("Animal has spread disease");
+                            }
+                        }
+                    }
+                }
+            //}
+        }
+    }
+    
     public void setMaxAge(int value){
         maxAge = value;
     }
@@ -200,6 +253,15 @@ public abstract class Animal extends FieldItem {
     
     public AnimalType getAnimalType(){
         return animalType;
+    }
+    
+    public void setDiseased(boolean value){
+        diseased = value;
+    }
+    
+    public boolean getDiseased()
+    {
+        return diseased;
     }
     
 }
