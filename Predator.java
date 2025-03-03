@@ -13,8 +13,8 @@ import javafx.scene.paint.Color;
  */
 
 public class Predator extends Animal {
-    private static final int PREY_FOOD_VALUE = 9;
-    private static final Random rand = Randomizer.getRandom();
+    private static final int INITIAL_MAX_FOOD_VALUE = 9;
+    //private static final Random rand = Randomizer.getRandom();
     
     private int age;
     private int foodLevel;
@@ -39,11 +39,11 @@ public class Predator extends Animal {
         
         if(randomAge) {
             age = rand.nextInt(getMaxAge());
-            foodLevel = rand.nextInt(PREY_FOOD_VALUE);
+            foodLevel = rand.nextInt(INITIAL_MAX_FOOD_VALUE);
         }
         else {
             age = 0;
-            foodLevel = PREY_FOOD_VALUE;
+            foodLevel = INITIAL_MAX_FOOD_VALUE;
         }
     }
     
@@ -93,7 +93,9 @@ public class Predator extends Animal {
                 if(prey.isAlive()) { 
                     System.out.println("PRED KILLED PREY");
                     prey.setDead();
-                    foodLevel = PREY_FOOD_VALUE;
+                    decrementHunger(prey.getFoodValue());
+                    
+                    //foodLevel = PREY_FOOD_VALUE;
                     return where;
                 }
             }

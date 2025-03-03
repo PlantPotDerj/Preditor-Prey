@@ -16,7 +16,7 @@ public class Prey extends Animal {
     private int foodLevel;
     private Field field;
     private int age;
-    
+    private static final int INITIAL_MAX_FOOD_VALUE = 10;
 
     /**
      * Create a new Prey. A prey may be created with age
@@ -33,7 +33,7 @@ public class Prey extends Animal {
         setFoodValue(5);
         setMaxAge(10);
         setBreedingAge(3);
-        foodLevel = 10;
+        foodLevel = rand.nextInt(INITIAL_MAX_FOOD_VALUE);
         if(randomAge) {
             age = rand.nextInt(getMaxAge());
         }
@@ -46,6 +46,7 @@ public class Prey extends Animal {
      */
     public void act(List<Animal> newPrey) {
         incrementAge();
+        incrementHunger(1);
         if(isAlive()) {
             giveBirth(newPrey);            
             // Try to move into a free location.
