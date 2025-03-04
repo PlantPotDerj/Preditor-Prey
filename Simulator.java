@@ -71,7 +71,7 @@ public class Simulator {
         Random random = new Random();
         
         field.clear();
-        boolean isDebugging = true;
+        boolean isDebugging = false;
         
         if(isDebugging == false){
             for(int row = 0; row < field.getDepth(); row++) {
