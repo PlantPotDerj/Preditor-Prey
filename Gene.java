@@ -31,7 +31,7 @@ public class Gene {
         litterSize = randomIntInRange(12,1);
         diseaseProbability = randomDoubleInRange(0.5 ,0.0);
         metabolism = randomDoubleInRange(1.01 ,0.24);
-        
+        geneToString();
    
         System.out.println( breedingAge +" "+  lifeSpan +" "+ breedingProbability +" "+ litterSize +" "+ diseaseProbability +" "+ metabolism);
     }
@@ -55,7 +55,7 @@ public class Gene {
         do {
             result = min + (random.nextDouble() * (max - min));
             result = Math.round(result * 100.0) / 100.0;
-        } while (result == min || result == max); // Ensure neither bound is picked
+        } while (result == min || result == max); 
         System.out.println(result);
         return result;
     }
@@ -63,9 +63,9 @@ public class Gene {
     private String geneToString(){
         String stringBreedingAge = String.valueOf(breedingAge);
         String stringLifeSpan;
-        String stringBreedingProbability = String.valueOf(breedingProbability * 100).substring(0,2);
+        String stringBreedingProbability;
         String stringLitterSize;
-        String stringDiseaseProbability = String.valueOf(diseaseProbability * 100).substring(0,2);
+        String stringDiseaseProbability;
         String stringMetabolism;
         
         if (lifeSpan<100){
@@ -85,18 +85,33 @@ public class Gene {
         }else{
             stringMetabolism = "0" + String.valueOf(metabolism *100).substring(0,2);
         }
+
+        String zeroAfterDecimalPoint = String.valueOf(diseaseProbability).substring(2,3);
+        if (zeroAfterDecimalPoint.equals("0")){
+            stringDiseaseProbability = "0" + String.valueOf(diseaseProbability * 100).substring(0,1);
+        }else{
+            stringDiseaseProbability = String.valueOf(diseaseProbability * 100).substring(0,2);
+        }
+        
+        String zeroAfterDecimalPointBreeding = String.valueOf(breedingProbability).substring(2,3);
+        if (zeroAfterDecimalPointBreeding.equals("0")){
+            stringBreedingProbability  = "0" + String.valueOf(breedingProbability * 100).substring(0,1);
+        }else{
+            stringBreedingProbability = String.valueOf(breedingProbability * 100).substring(0,2);
+        }
         
         gene = stringBreedingAge + stringLifeSpan 
         + stringBreedingProbability + stringLitterSize 
         + stringDiseaseProbability + stringMetabolism;
         System.out.println("Gene is: "+ gene);
+        
         return gene;
         
     }
     
     private void stringToGene(String value){
         breedingAge  = Integer.parseInt(value.substring(0,2));
-        //System.out.println("breeding age : "+ breedingAge);
+        System.out.println("breeding age : "+ breedingAge);
         
         String temporary = value.substring(2,3);
         if (temporary.equals("0")){
@@ -104,10 +119,7 @@ public class Gene {
         }else{
             lifeSpan = Integer.parseInt(value.substring(2,5));
         }
-        //System.out.println("life span : "+ lifeSpan);
-        
-        breedingProbability = (Integer.parseInt(value.substring(5,7))/100.0);
-        //System.out.println("breeding prob : "+ breedingProbability);
+        System.out.println("life span : "+ lifeSpan);
         
         String temporary2 = value.substring(7,8);
         if (temporary2.equals("0")){
@@ -115,23 +127,29 @@ public class Gene {
         }else{
             litterSize = Integer.parseInt(value.substring(7,9));
         }
-        //System.out.println("litter size : "+ litterSize);
+        System.out.println("litter size : "+ litterSize);
         
         String temporary3 = value.substring(11,12);//changed here
-        //System.out.println("temporary 3  : "+ temporary3 );
         if (temporary3.equals("1")){
             metabolism = 1.0;
         }else{
             metabolism = (Integer.parseInt(value.substring(12))/100.0);
         }
-        diseaseProbability = (Integer.parseInt(value.substring(9,11))/100.0);//cahnged here
+        System.out.println("metabolism : "+ metabolism);
+        
+
+        breedingProbability = (Integer.parseInt(value.substring(5,7))/100.0);
+        System.out.println("breeding prob : "+ breedingProbability);
+        
+        //String temporary5 = value.substring(9,10);
+        diseaseProbability = (Integer.parseInt(value.substring(9,11))/100.0);
         System.out.println("disease prob : "+ diseaseProbability );
-        //System.out.println("metabolism : "+ metabolism);
-        geneToString();
+        
+        geneToString(); //why is this here?
         
     }
     
-    public void combineGene(String value , String value2){
+    private void combineGene(String value , String value2){
         String parentGene1 = value.substring(0,7);
         String parentGene2 = value2.substring(7);
         String combineGene = parentGene1 + parentGene2;
@@ -146,104 +164,75 @@ public class Gene {
     }
     
     private void chooseMutatedGene() {
-        
-        
-        // Decide whether mutation happens (20% chance)
         //testing changing -.2 to 0  & flipped inequality
-        if (random.nextDouble() > 0.00) {
-            int mutationChoice = 6; //random.nextInt(5);  // We have 5 integer properties to mutate: breedingAge, lifeSpan, litterSize, diseaseProbability, metabolism
-    
+        if (random.nextDouble() > 0.20) {
+            int mutationChoice = random.nextInt(5); 
             switch (mutationChoice) {
                 case 0: // Mutate breedingAge
-                    //System.out.println("Mutated breeding age");
                     if (breedingAge == 90){
                         breedingAge -= 1;
-                        //System.out.println("breeding Age dec by 1: " +breedingAge);
                     }else if (breedingAge == 10){
                         breedingAge += 1 ;
-                        //System.out.println("breeding Age inc by 1: " +breedingAge);
                     }else{
                         breedingAge = mutateIntegerGene(breedingAge);
                     }
                     break;
                 case 1: // Mutate lifeSpan
-                    //System.out.println("Mutated life span");
-                    //System.out.println(lifeSpan);
                     if (lifeSpan == 120){
                         lifeSpan -= 1;
-                        //System.out.println("Mutated life dec by 1: " +lifeSpan);
                     }else if (lifeSpan == 10){
                         lifeSpan += 1;
-                        //System.out.println("Mutated life inc by 1: " +lifeSpan);
                     }else{
                         lifeSpan = mutateIntegerGene(lifeSpan);
                     }
                     break;
                 case 2: // Mutate litterSize
-                    //System.out.println("Mutated littersize");
                     if (litterSize == 12){
                         litterSize -= 1;
-                        System.out.println("litterSize dec by 1: " +litterSize);
                     }else if (litterSize == 1){
                         litterSize += 1;
-                        System.out.println("litterSize inc by 1: " +litterSize);
                     }else{
                         litterSize = mutateIntegerGene(litterSize);
                     }
                     break;
                 case 3: // Mutate diseaseProbability
-                    System.out.println("Mutated disease Probability");
                     if (diseaseProbability == 0.49){
                         diseaseProbability -= 0.1;
-                        System.out.println("diseaseProbability dec by 1: " +diseaseProbability);
                     }else if (diseaseProbability == 0.01){
                         diseaseProbability += 0.1;
-                        System.out.println("diseaseProbability inc by 1: " +diseaseProbability);
                     }else{
                         diseaseProbability = mutateDoubleGene(diseaseProbability);
                     }
                     break;
                 case 4: // Mutate metabolism
-                    System.out.println("Mutated metabolism");
                     if (metabolism == 1.0){
                         metabolism -= 0.1;
-                        System.out.println("metabolism dec by 1: " +metabolism);
                     }else if (metabolism == 0.25){
                         metabolism += 0.1;
-                        System.out.println("metabolism inc by 1: " +metabolism);
                     }else{
                         metabolism = mutateDoubleGene(metabolism);
                     }
                     break;
-                default: // Breeeding probability 
-                    System.out.println("Breeding proabibly  probability");
+                default: // Breeeding probability
                     if (breedingProbability == 0.49){
                         breedingProbability -= 0.1;
-                        System.out.println("breedingProbability dec by 1: " +breedingProbability);
                     }else if (breedingProbability == 0.01){
                         breedingProbability += 0.1;
-                        System.out.println("breedingProbability inc by 1: " +breedingProbability);
                     }else{
                         breedingProbability = mutateDoubleGene(breedingProbability);
                     }
                     break;
             }
-        }else{
-            System.out.println("no mutation");
         }
     }
     
     private int mutateIntegerGene(int value ){
-        
         // 50% chance to add or subtract 1
         if (random.nextBoolean()) {
             value++;  // Add 1
         } else {
             value--;  // Subtract 1
         }
-        System.out.println("Value is: " + value);
-        
-        //System.out.println("Mutated lifeSpan: " + lifeSpan);
         return value;
     }
     
@@ -255,9 +244,7 @@ public class Gene {
         } else {
             value -= 0.1; 
         }
-        System.out.println("Value is: " + value);
         return value;
-        //System.out.println("Mutated lifeSpan: " + lifeSpan);
     }
     
     public String getGene(){
