@@ -81,11 +81,11 @@ public class Simulator {
                     if(rand.nextDouble() <= PREDATOR_CREATION_PROBABILITY) {
                         int pred_random = random.nextInt(2);
                         if (pred_random == 0) {
-                            Tiger tiger = new Tiger(true,field, location);
+                            Tiger tiger = new Tiger(true,field, location, new Gene());
                             animals.add(tiger);
                         }
                         else{
-                            Wolf wolf = new Wolf(true, field, location);
+                            Wolf wolf = new Wolf(true, field, location, new Gene());
                             animals.add(wolf);
                         }
                         continue;
@@ -95,15 +95,15 @@ public class Simulator {
                         int prey_random = random.nextInt(3);
                         switch (prey_random){
                             case 0:
-                                Zebra zebra = new Zebra(true, field, location);
+                                Zebra zebra = new Zebra(true, field, location, new Gene());
                                 animals.add(zebra);
                                 break;
                             case 1:
-                                Deer deer = new Deer(true, field, location);
+                                Deer deer = new Deer(true, field, location, new Gene());
                                 animals.add(deer);
                                 break;
                             default:
-                                Mouse mouse = new Mouse(true, field, location);
+                                Mouse mouse = new Mouse(true, field, location, new Gene());
                                 animals.add(mouse);
                         }
                         continue;
@@ -114,12 +114,14 @@ public class Simulator {
                 }
             }
         }else{
-            //Zebra zebra = new Zebra(true, field, new Location(0,0));
+            //Zebra zebra = new Zebra(true, field, new Location(0,0), new Gene());
             //animals.add(zebra);
+            
+            
             
             //Zebra zebra1 = new Zebra(true, field, new Location(0,1));
             //animals.add(zebra1);
-            //Deer deer = new Deer(true, field, new Location(0,2));
+            //Deer deer = new Deer(true, field, new Location(0,1), new Gene());
             //animals.add(deer);
             //Gene gene1  = new Gene();
             //Gene gene2  = new Gene();

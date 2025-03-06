@@ -11,13 +11,13 @@ public class Mouse extends Prey
     /**
      * Constructor for objects of class Mouse
      */
-    public Mouse(boolean randomAge, Field field, Location location)
+    public Mouse(boolean randomAge, Field field, Location location, Gene gene)
     {
-        super(randomAge, field, location, Color.RED, AnimalType.Mouse);
+        super(randomAge, field, location, Color.RED, AnimalType.Mouse, gene);
         setFoodValue(1);
-        setMaxAge(10);
-        setBreedingAge(5);
-        setBreedingProbability(0.11);
-        setMaxLitterSize(5);
+        //setMaxAge(10);
+        //setBreedingAge(5);
+        //setBreedingProbability(0.11);
+        //setMaxLitterSize(5);
     }
 }

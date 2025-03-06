@@ -13,11 +13,11 @@ import javafx.scene.paint.Color;
  */
 
 public class Predator extends Animal {
-    private static final int INITIAL_MAX_FOOD_VALUE = 9;
+    private static final double INITIAL_MAX_FOOD_VALUE = 9.0;
     //private static final Random rand = Randomizer.getRandom();
     
     private int age;
-    private int foodLevel;
+    private double foodLevel;
     private Field field;
     
     /**
@@ -28,18 +28,18 @@ public class Predator extends Animal {
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Predator(boolean randomAge, Field field, Location location, Color col, AnimalType animalType) {
-        super(field, location, col, animalType);
+    public Predator(boolean randomAge, Field field, Location location, Color col, AnimalType animalType, Gene gene) {
+        super(field, location, col, animalType, gene);
         this.field = field;
         
         setFoodValue(0);
-        setMaxAge(20);
-        setBreedingAge(8);
+        //setMaxAge(20);
+        //setBreedingAge(8);
         //thease are defaults they get overwritten
         
         if(randomAge) {
             age = rand.nextInt(getMaxAge());
-            foodLevel = rand.nextInt(INITIAL_MAX_FOOD_VALUE);
+            foodLevel = rand.nextDouble(INITIAL_MAX_FOOD_VALUE);
         }
         else {
             age = 0;
@@ -56,7 +56,7 @@ public class Predator extends Animal {
      */
     public void act(List<Animal> newPredators) {
         incrementAge();
-        incrementHunger(1);// might change for metabolism
+        incrementHunger();// might change for metabolism
         if(isAlive()) {
             giveBirth(newPredators);
             catchRandomDisease();
@@ -74,7 +74,7 @@ public class Predator extends Animal {
             else {
                 // Overcrowding.
                 setDead();
-                System.out.println("OVERCROWDING DEATH PRED");
+                //System.out.println("OVERCROWDING DEATH PRED");
             }
         }
     }
@@ -94,7 +94,7 @@ public class Predator extends Animal {
             if(animal instanceof Prey) {
                 Prey prey = (Prey) animal;
                 if(prey.isAlive()) { 
-                    System.out.println("PRED KILLED PREY");
+                    //System.out.println("PRED KILLED PREY");
                     prey.setDead();
                     decrementHunger(prey.getFoodValue());
                     

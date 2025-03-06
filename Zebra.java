@@ -9,14 +9,16 @@ public class Zebra extends Prey
        /**
      * Constructor for objects of class Zebra
      */
-    public Zebra(boolean randomAge, Field field, Location location)
+    public Zebra(boolean randomAge, Field field, Location location, Gene gene)
     {
-        super(randomAge, field, location, Color.BLUE, AnimalType.Zebra);
+        super(randomAge, field, location, Color.BLUE, AnimalType.Zebra, gene);
         setFoodValue(3);
-        //setAge(10);
-        setMaxAge(11);
-        setBreedingAge(4);
-        setBreedingProbability(0.10);
-        setMaxLitterSize(2);
+        //setAge(10);//
+    
+        //setMale();
+        //setBreedingAge(4);//
+        //setBreedingProbability(0.10);
+        //setMaxLitterSize(2);
+        //System.out.println("age is;" + getAge());
     }
 }

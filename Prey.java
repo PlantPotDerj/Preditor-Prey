@@ -13,10 +13,10 @@ import javafx.scene.paint.Color;
 
 public class Prey extends Animal {
     //private static final Random rand = Randomizer.getRandom();
-    private int foodLevel;
+    private double foodLevel;
     private Field field;
     private int age;
-    private static final int INITIAL_MAX_FOOD_VALUE = 10;
+    private static final double INITIAL_MAX_FOOD_VALUE = 10.0;
 
     /**
      * Create a new Prey. A prey may be created with age
@@ -26,14 +26,15 @@ public class Prey extends Animal {
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Prey(boolean randomAge, Field field, Location location, Color col, AnimalType animalType) {
-        super(field, location, col, animalType);
+    public Prey(boolean randomAge, Field field, Location location, Color col, AnimalType animalType, Gene gene) {
+        super(field, location, col, animalType, gene);
         this.field = field;
+        //Gene gene = getGene();
         age = 0;
         setFoodValue(5);
-        setMaxAge(10);
-        setBreedingAge(3);
-        foodLevel = rand.nextInt(INITIAL_MAX_FOOD_VALUE);
+        //setMaxAge(10);
+        //setBreedingAge(3);
+        foodLevel = rand.nextDouble(INITIAL_MAX_FOOD_VALUE);
         if(randomAge) {
             age = rand.nextInt(getMaxAge());
         }
@@ -47,7 +48,7 @@ public class Prey extends Animal {
     public void act(List<Animal> newPrey) {
         super.act(newPrey);
         incrementAge();
-        incrementHunger(1);
+        incrementHunger();
         if(isAlive()) {
             giveBirth(newPrey);
             catchRandomDisease();
@@ -71,7 +72,7 @@ public class Prey extends Animal {
             else {
                 // Overcrowding.
                 setDead();
-                System.out.println("OVERCROWDING DEATH PREY");
+                //System.out.println("OVERCROWDING DEATH PREY");
             }
         }
     }

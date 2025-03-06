@@ -10,12 +10,12 @@ public class Wolf extends Predator
         /**
      * Constructor for objects of class Wolf
      */
-    public Wolf(boolean randomAge, Field field,Location location)
+    public Wolf(boolean randomAge, Field field,Location location, Gene gene)
     {
-        super(randomAge, field, location, Color.GREY, AnimalType.Wolf);
-        setMaxAge(18);
-        setBreedingAge(13);
-        setBreedingProbability(0.15);
-        setMaxLitterSize(4);
+        super(randomAge, field, location, Color.GREY, AnimalType.Wolf, gene);
+        //setMaxAge(18);
+        //setBreedingAge(13);
+        //setBreedingProbability(0.15);
+        //setMaxLitterSize(4);
     }
 }

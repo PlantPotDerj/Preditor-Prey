@@ -11,25 +11,30 @@ import java.util.Iterator;
  */
 
 public abstract class Animal extends FieldItem {
-    
+    private String animalToMateWithGene = null;
     private boolean alive;
     private Color color = Color.BLUE;
     private int age = 0;
     private int stepsBeforeDiseasedDeath = 5;
     private int stepsCounter = 0;
-    private int foodLevel = 10;
+    private double foodLevel = 10.0;
     private int maxAge = 20;
     private int breedingAge = 10;
     private double breedingProbabiltiy = 0.05;
+    private double metabolism = 0.05;
     private double diseasedProbabiltiy = 0.02;//changed from 0.22 to 0
     private boolean diseased = false;
+    //boolean canBreed = false;
     private int maxLitterSize = 2;
     private AnimalType animalType = null;
+    private Gender animalGender = null;
+    private Gene gene = null;
     public enum  AnimalType {Tiger, Deer, Mouse, Wolf, Zebra};
+    public enum Gender{Male, Female};
     public static final Random rand = Randomizer.getRandom();
        
     //how nutritional the animal is default for predator is 0 
-    
+    //help
     /**
      * Create a new animal at location in field.
      * 
@@ -38,11 +43,21 @@ public abstract class Animal extends FieldItem {
      * @param col the color of the animal 
      */
     
-    public Animal(Field field, Location location, Color col, AnimalType animalType){
+    public Animal(Field field, Location location, Color col, AnimalType animalType, Gene gene){
         super(field, location, col);
         alive = true;
         this.animalType = animalType;
+        this.gene = gene;
+        //System.out.println("animals gene is" + gene.getGene());
+        diseasedProbabiltiy = gene.getDiseaseProbability();
+        breedingProbabiltiy = gene.getBreedingProbability();
+        maxAge = gene.getLifeSpan();
+        maxLitterSize = gene.getLitterSize();
+        breedingAge = gene.getBreedingAge();
+        metabolism = gene.getMetabolism();
+        
         setLocation(location);
+        setGender();
     }
     
     /**
@@ -54,10 +69,10 @@ public abstract class Animal extends FieldItem {
         if (diseased){
             if (stepsCounter < stepsBeforeDiseasedDeath){
                 stepsCounter ++;
-                //System.out.println(stepsCounter);
+                //System.out.println(stepsCounter);//
             }else{
                 stepsCounter = 0;
-                //System.out.println("TIMES UP ANIMAL DIED");
+                //System.out.println("TIMES UP ANIMAL DIED");//
                 setDead();
             }
         }
@@ -93,8 +108,8 @@ public abstract class Animal extends FieldItem {
         Plant plant = new Plant(lastFieldBeforeDeath, lastLocationBeforeDeath);
     }
     
-    public void giveBirth(List<Animal> newPreys) {
-        // New rabbits are born into adjacent locations.
+    public void giveBirth(List<Animal> newAnimals) {
+        // New animals are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
@@ -103,24 +118,24 @@ public abstract class Animal extends FieldItem {
             Location loc = free.remove(0);
             switch (animalType){
                 case (AnimalType.Tiger):
-                    Tiger tiger = new Tiger(true,field, loc);
-                    newPreys.add(tiger);
+                    Tiger tiger = new Tiger(true,field, loc,new Gene(gene.getGene(),animalToMateWithGene));
+                    newAnimals.add(tiger);
                     break;
                 case (AnimalType.Wolf):
-                    Wolf wolf = new Wolf(true,field, loc);
-                    newPreys.add(wolf);
+                    Wolf wolf = new Wolf(true,field, loc, new Gene(gene.getGene(),animalToMateWithGene));
+                    newAnimals.add(wolf);
                     break;
                 case (AnimalType.Zebra):
-                    Zebra zebra = new Zebra(true,field, loc);
-                    newPreys.add(zebra);
+                    Zebra zebra = new Zebra(true,field, loc, new Gene(gene.getGene(),animalToMateWithGene)); 
+                    newAnimals.add(zebra);
                     break;
                 case (AnimalType.Deer):
-                    Deer deer = new Deer(true,field, loc);
-                    newPreys.add(deer);
+                    Deer deer = new Deer(true,field, loc, new Gene(gene.getGene(),animalToMateWithGene));
+                    newAnimals.add(deer);
                     break;
                 default:
-                    Mouse mouse = new Mouse(true,field, loc);
-                    newPreys.add(mouse);
+                    Mouse mouse = new Mouse(true,field, loc, new Gene(gene.getGene(),animalToMateWithGene));
+                    newAnimals.add(mouse);
             }
         }
     }
@@ -132,7 +147,8 @@ public abstract class Animal extends FieldItem {
      */
     private int breed() {
         int births = 0;
-        if(canBreed() && rand.nextDouble() <= getBreedingProbability()) {
+        // place after the &&
+        if(canBreed()){//&& rand.nextDouble() <= getBreedingProbability()) {
             births = rand.nextInt(getMaxLitterSize()) + 1;
         }
         return births;
@@ -143,17 +159,44 @@ public abstract class Animal extends FieldItem {
      * @return true if the prey can breed, false otherwise.
      */
     private boolean canBreed() {
-        return age >= breedingAge;
+        if (age >= breedingAge){
+            //System.out.println("sufficent age");
+            List<Location> adjacentLocations = getField().adjacentLocations(getLocation());
+            if(!adjacentLocations.isEmpty()){
+                //System.out.println(" not empty");
+                for (Location loc : adjacentLocations){
+                    //Location location = adjacentLocations.remove(0);
+                    //System.out.println("False bitch");
+                    FieldItem fieldItemAtLocation = getField().getObjectAt(loc);
+                    if(fieldItemAtLocation != null){
+                        //System.out.println("item has been located empty");
+                        if(fieldItemAtLocation instanceof Animal){
+                            //System.out.println(" item is an animal will be casted");
+                            Animal animalToBreedWith = (Animal) fieldItemAtLocation;
+                            if (animalType == animalToBreedWith.getAnimalType()){
+                                //System.out.println(" same breed of animal ");
+                                if (!(animalToBreedWith.getGender() == animalGender )){
+                                    //System.out.println("Animal will mate");
+                                    animalToMateWithGene = animalToBreedWith.gene.getGene();
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
     
     /**
      * Make this animal more hungry. This could result in the animals's death
      * .
      */
-    public void incrementHunger(int foodValue) {
-        foodLevel -= foodValue;
+    public void incrementHunger() {
+        foodLevel -= metabolism;
         if(foodLevel <= 0) {
-            System.out.println("ANIMAL DEATH FROM HUNGER");
+            //System.out.println("ANIMAL DEATH FROM HUNGER");
             setDead();
         }
     }
@@ -176,7 +219,7 @@ public abstract class Animal extends FieldItem {
         if(age > maxAge) {
             //System.out.println("animal age was " + age + "max age was" + maxAge);
             setDead();
-            System.out.println("DEATH OF AGE");
+            //System.out.println("DEATH OF AGE");
         }
     }
     
@@ -187,7 +230,7 @@ public abstract class Animal extends FieldItem {
             
             if(rand.nextDouble() >= diseasedProbabiltiy){
                 diseased = true;
-                System.out.println("Animal is diseased");
+                //System.out.println("Animal is diseased");
             }
         }
     }
@@ -197,7 +240,7 @@ public abstract class Animal extends FieldItem {
             Random rand = Randomizer.getRandom();
             Random random = new Random();
             
-            //if(rand.nextDouble() >= diseasedProbabiltiy){
+            if(rand.nextDouble() >= diseasedProbabiltiy){
                 List<FieldItem> NeighbourFieldItems = getField().getLivingNeighbours(getLocation());
                 if(!NeighbourFieldItems.isEmpty())
                 {
@@ -206,17 +249,33 @@ public abstract class Animal extends FieldItem {
                             Animal animal = (Animal) fieldItem;
                             if (animal.getAnimalType() == animalType){
                                 animal.setDiseased(true);
-                                System.out.println("Animal has spread disease");
+                                //System.out.println("Animal has spread disease");
                             }
                         }
                     }
                 }
-            //}
+            }
         }
+    }
+    
+    private void setGender(){
+        if (rand.nextBoolean()) {
+            animalGender = Gender.Male;
+        } else {
+            animalGender = Gender.Female;
+        }
+    }
+    
+    public Gender getGender(){
+        return animalGender;
     }
     
     public void setMaxAge(int value){
         maxAge = value;
+    }
+    
+    public double getMetabolism(){
+        return metabolism;
     }
     
     public int getMaxAge(){
@@ -251,6 +310,11 @@ public abstract class Animal extends FieldItem {
         age = value;
     }
     
+    public int getAge(){
+        return age;
+    }
+    
+    
     public AnimalType getAnimalType(){
         return animalType;
     }
@@ -263,5 +327,19 @@ public abstract class Animal extends FieldItem {
     {
         return diseased;
     }
+    
+    public void setMale()
+    {
+        animalGender = Gender.Male;
+    }
+    
+    public void setFemale()
+    {
+        animalGender = Gender.Female;
+    }
+    
+    //public Gene getGene(){
+    //    return gene;
+    //}
     
 }
