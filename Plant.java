@@ -1,6 +1,6 @@
 import javafx.scene.paint.Color; 
 /**
- * Write a description of class Plant here.
+ * plant class fieldItem item, has a food nutrition value of 1.
  *
  * @author (your name)
  * @version (a version number or a date)

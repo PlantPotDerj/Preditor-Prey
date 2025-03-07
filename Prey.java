@@ -4,8 +4,8 @@ import java.util.Iterator;
 import javafx.scene.paint.Color; 
 
 /**
- * A simple model of a rabbit.
- * Rabbits age, move, breed, and die.
+ * A simple model of Prey.
+ * prey act, and find food
  * 
  * @author David J. Barnes, Michael Kölling and Jeffery Raphael
  * @version 2025.02.10
@@ -42,7 +42,7 @@ public class Prey extends Animal {
     
     /**
      * This is what the prey does most of the time - it runs 
-     * around. Sometimes it will breed or die of old age.or eat food 
+     * around. Sometimes it will breed or die of old age.or eat food, spread disease
      * @param newRabbits A list to return newly born prey.
      */
     public void act(List<Animal> newPrey) {
@@ -81,8 +81,9 @@ public class Prey extends Animal {
     
     
     /**
-     * Look for Preys adjacent to the current location.
-     * Only the first live Prey is eaten.
+     * Look for plants adjacent to the current location.
+     * Only the first live plant is eaten.
+     * locates plants 
      * @return Where food was found, or null if it wasn't.
      */
     private Location findFood() {

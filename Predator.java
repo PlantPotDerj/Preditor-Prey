@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 
 /**
  * A simple model of a Predator.
- * Predatores age, move, eat rabbits, and die.
+ * Predatores act,snd find food.
  * 
  * @author David J. Barnes and Michael Kölling
  * @version 2025.02.10
@@ -27,6 +27,9 @@ public class Predator extends Animal {
      * @param randomAge If true, the Predator will have random age and hunger level.
      * @param field The field currently occupied.
      * @param location The location within the field.
+     * @param col the color of animal
+     * @param animalType the type of animal
+     * @param gene the gene of animal 
      */
     public Predator(boolean randomAge, Field field, Location location, Color col, AnimalType animalType, Gene gene) {
         super(field, location, col, animalType, gene);
@@ -50,8 +53,7 @@ public class Predator extends Animal {
     /**
      * This is what the Predator does most of the time: it hunts for
      * Preys. In the process, it might breed, die of hunger,
-     * or die of old age.
-     * @param field The field currently occupied.
+     * or die of old age, catch/spread disease
      * @param newPredatores A list to return newly born Predatores.
      */
     public void act(List<Animal> newPredators) {

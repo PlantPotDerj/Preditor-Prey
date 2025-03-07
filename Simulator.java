@@ -71,7 +71,7 @@ public class Simulator {
         Random random = new Random();
         
         field.clear();
-        boolean isDebugging = true;
+        boolean isDebugging = false;
         
         if(isDebugging == false){
             for(int row = 0; row < field.getDepth(); row++) {
@@ -120,14 +120,20 @@ public class Simulator {
             Zebra zebra1 = new Zebra(true, field, new Location(0,1), new Gene());
             animals.add(zebra1);
             
-            Zebra zebra2 = new Zebra(true, field, new Location(1,1), new Gene());
-            animals.add(zebra2);
+            //Zebra zebra2 = new Zebra(true, field, new Location(1,1), new Gene());
+            //animals.add(zebra2);
             
-            Zebra zebra4 = new Zebra(true, field, new Location(1,1), new Gene());
-            animals.add(zebra4);
+            //Zebra zebra4 = new Zebra(true, field, new Location(2,1), new Gene());
+            //animals.add(zebra4);
             
-            Zebra zebra3 = new Zebra(true, field, new Location(2,1), new Gene());
-            animals.add(zebra3);
+            //Zebra zebra3 = new Zebra(true, field, new Location(3,1), new Gene());
+            //animals.add(zebra3);
+            
+            //Zebra zebra5 = new Zebra(true, field, new Location(3,0), new Gene());
+            //animals.add(zebra5);
+            
+            //Zebra zebra6 = new Zebra(true, field, new Location(2,0), new Gene());
+            //animals.add(zebra6);
             //Deer deer = new Deer(true, field, new Location(0,1), new Gene());
             //animals.add(deer);
             //Gene gene1  = new Gene();

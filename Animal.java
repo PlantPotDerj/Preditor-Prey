@@ -15,7 +15,7 @@ public abstract class Animal extends FieldItem {
     private boolean alive = true; // By default an animal is alive
     private Color color = Color.BLUE;
     private int age = 0;
-    private int stepsBeforeDiseasedDeath = 5;
+    private int stepsBeforeDiseasedDeath = 10;
     private int stepsCounter = 0;
     private double foodLevel = 10.0;
     private int maxAge = 20;
@@ -40,6 +40,8 @@ public abstract class Animal extends FieldItem {
      * @param field The field currently occupied.
      * @param location The location within the field.
      * @param col the color of the animal 
+     * @param animalType the type of the animal set by enum 
+     * @param gene the gene of the animal
      */
     
     public Animal(Field field, Location location, Color col, AnimalType animalType, Gene gene){
@@ -64,14 +66,18 @@ public abstract class Animal extends FieldItem {
      * Make this animal act - that is: make it do
      * whatever it wants/needs to do.
      * @param newAnimals A list to receive newly born animals.
+     * alwasy check if deases and start the counter
+     * if counter greater then steps before death set dead
      */
     public void act(List<Animal> newAnimals){
         if (diseased){
             if (stepsCounter < stepsBeforeDiseasedDeath){
                 stepsCounter ++;
+                //System.out.println(stepsCounter);
             }else{
                 stepsCounter = 0;
                 setDead();
+                //System.out.println("ANIMAL DEATH FROM DISEASE");
             }
         }   
     }
@@ -87,6 +93,7 @@ public abstract class Animal extends FieldItem {
     /**
      * Indicate that the animal is no longer alive.
      * It is removed from the field.
+     * and plant is placed in the location
      */
     protected void setDead() {
         alive = false;
@@ -100,13 +107,15 @@ public abstract class Animal extends FieldItem {
             field.clear(location);
             location = null;
             field = null;
+            //System.out.println("ANIMAL DEAD");
         }
         Plant plant = new Plant(lastFieldBeforeDeath, lastLocationBeforeDeath);
     }
     
     Animal currentBreedingMate;
     /**
-     * A prey can breed if it has reached the breeding age.
+     * A prey can breed if it has reached the breeding age 
+     * and  has a animal of same type and diff gender adjacent to it.
      * @return true if the prey can breed, false otherwise.
      */
     private boolean canBreed() {
@@ -147,11 +156,16 @@ public abstract class Animal extends FieldItem {
                 continue;
             }
             
+            //System.out.println("ANIMAL IS BREEDING");
             return true;
         }
         return false;
     }
     
+    /**
+     * animal gives birth by calling canBreed which checks for conditions
+     * breeds animal of dame type with genes taken from itself and neigbouring animal
+     */
     public void giveBirth(List<Animal> newAnimals) {
         // New animals are born into adjacent locations.
         // Get a list of adjacent free locations.
@@ -171,7 +185,7 @@ public abstract class Animal extends FieldItem {
                 
                 switch (animalType){
                     case (AnimalType.Tiger):
-                        Tiger tiger = new Tiger(true,field, loc,childGene);
+                        Tiger tiger = new Tiger(true,field, loc, childGene);
                         newAnimals.add(tiger);
                         break;
                     case (AnimalType.Wolf):
@@ -209,7 +223,7 @@ public abstract class Animal extends FieldItem {
     
     /**
      * Make this animal more hungry. This could result in the animals's death
-     * .
+     * decerements by metabolism 
      */
     public void incrementHunger() {
         foodLevel -= gene.getMetabolism();
@@ -237,23 +251,34 @@ public abstract class Animal extends FieldItem {
         }
     }
     
+    /**
+     * checks if animal is not deseased  
+     * generates a double if double < disease probability make animal diseased
+     */
     public void catchRandomDisease(){
         if (!diseased){
             Random rand = Randomizer.getRandom();
             Random random = new Random();
-            
-            if(rand.nextDouble() >= gene.getDiseaseProbability()){
+            // CHANGED > TO <
+            double var = rand.nextDouble();
+            if(var <= gene.getDiseaseProbability()){
+                //System.out.println("random double was:" + var + " Disease prob was" + gene.getDiseaseProbability());
                 diseased = true;
+                //System.out.println(animalType+ "IS DISEASED");
             }
         }
     }
     
+    /**
+     * checks if adacent animals are of same type and spreads disease randomly 
+     */
     public void spreadDisease(){
         if (diseased){
             Random rand = Randomizer.getRandom();
             Random random = new Random();
             
-            if(rand.nextDouble() >= gene.getDiseaseProbability()){
+            //Changed from > to <
+            if(rand.nextDouble() <= gene.getDiseaseProbability()){
                 List<FieldItem> NeighbourFieldItems = getField().getLivingNeighbours(getLocation());
                 if(!NeighbourFieldItems.isEmpty()) {
                     for (FieldItem fieldItem : NeighbourFieldItems) {
@@ -261,6 +286,7 @@ public abstract class Animal extends FieldItem {
                             Animal animal = (Animal) fieldItem;
                             if (animal.getAnimalType() == animalType){
                                 animal.setDiseased(true);
+                                //System.out.println("ANIMLA SPREAD DISEASE");
                             }
                         }
                     }
@@ -269,6 +295,7 @@ public abstract class Animal extends FieldItem {
         }
     }
     
+    //Getters and setters
     private void setGender(){
         if (rand.nextBoolean()) {
             animalGender = Gender.Male;

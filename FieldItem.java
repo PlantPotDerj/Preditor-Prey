@@ -1,6 +1,8 @@
 import javafx.scene.paint.Color; 
 /**
- * Write a description of class FieldItem here.
+ * Field item class
+ * all field items like animals/plants are created here 
+ * has access to the field same field instance here.
  *
  * @author (your name)
  * @version (a version number or a date)
@@ -36,7 +38,7 @@ public class FieldItem
     }
     
     /**
-     * Changes the color of the firlditem
+     * Changes the color of the fielditem
      */
     public void setColor(Color col) {
         color = col;

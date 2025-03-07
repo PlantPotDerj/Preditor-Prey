@@ -22,14 +22,26 @@ public class Gene {
      * breeding AGE, Metabolism, life Span, Litter Size, Disease probability,
      */
     public Gene() {
-        Random random = new Random();
+        boolean isdebugging = false;
         
-        breedingAge = randomIntInRange(90,12);
-        lifeSpan = randomIntInRange(120,10);
-        breedingProbability = randomDoubleInRange(0.49, 0.1);
-        litterSize = randomIntInRange(12,1);
-        diseaseProbability = randomDoubleInRange(0.49 ,0.1);
-        metabolism = randomDoubleInRange(1.00 ,0.25);
+        if (isdebugging == false){
+            Random random = new Random();
+            
+            breedingAge = randomIntInRange(90,12);
+            lifeSpan = randomIntInRange(120,10);
+            breedingProbability = randomDoubleInRange(0.49, 0.1);
+            litterSize = randomIntInRange(12,1);
+            diseaseProbability = randomDoubleInRange(0.49 ,0.1);
+            metabolism = randomDoubleInRange(1.00 ,0.25);
+        }else{
+            
+            breedingAge = 12;
+            lifeSpan = 120;
+            breedingProbability = 0.5;
+            litterSize =3;
+            diseaseProbability = 0.1;
+            metabolism = 0.1;
+        }
     }
     
     /**
@@ -42,16 +54,25 @@ public class Gene {
          mutateAGene(aStringToGene(combineGeneString(value, value2)));
     }
     
+    /**
+     * randomly assignes int function between values
+     */
     private int randomIntInRange(int max, int min){
         Random random = new Random();
         return random.nextInt(max - min + 1) + min;
     }
     
+    /**
+     * randomly assignes a souble funcrtion between values
+     */
     private double randomDoubleInRange(double max, double min){
         Random random = new Random();
         return min + (max - min) * random.nextDouble();
     }
     
+    /**
+     * formatting of the values padding with 0 if needed to the left
+     */
     public static String DataToString(boolean twoOrThreeDigits, int number){
         if (!twoOrThreeDigits){
             return String.format("%02d", number); // returns format 00
@@ -96,12 +117,19 @@ public class Gene {
         return gene;
     }
     
+    /**
+     * combines parents genes together first 7 and last 7 
+     */
     private String combineGeneString(String gene01, String gene02){
         String gene1 = gene01.substring(0,7); // gene01 XXXXXXX0000000
         String gene2 = gene02.substring(7,14); // gene02 0000000YYYYYYY
         return gene1+gene2; // XXXXXXXYYYYYYY
     }
     
+    /**
+     * randomly muttates either breeding age, life span, litter size 
+     * calls mutateAGeneValue returns either  -1 or a mutated value
+     */
     public void mutateAGene(Gene inGene){
         int mutatedBreedingAge = mutateAGeneValue(inGene.getBreedingAge(), 12, 90);
         int mutatedLifeSpan = mutateAGeneValue(inGene.getLifeSpan(), 10, 120);
@@ -123,6 +151,11 @@ public class Gene {
         }
     }
 
+    /**
+     * clamps a value between the minimum and maximum 
+     * calls randomOneOrMinusOne function to randomly change value
+     * if value within the clap return value otherwise a -1
+     */
     private int mutateAGeneValue(int inGeneValue, int min, int max)
     {
         if(random.nextDouble() < 20) {
@@ -133,6 +166,9 @@ public class Gene {
         return -1;
     }
     
+    /**
+     * uses booleans to randomly assign values
+     */
     private int randomOneOrMinusOne()
     {
         if(random.nextBoolean())
@@ -141,7 +177,10 @@ public class Gene {
         }
         return 0;
     }
-        
+    
+    /**
+     * getters and setters start here
+     */
     public String getGene(){
         return gene;
     }
