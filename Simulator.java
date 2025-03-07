@@ -50,7 +50,7 @@ public class Simulator {
                 it.remove();
             }
         }
-               
+
         animals.addAll(newAnimals);
     }
         
@@ -71,7 +71,7 @@ public class Simulator {
         Random random = new Random();
         
         field.clear();
-        boolean isDebugging = false;
+        boolean isDebugging = true;
         
         if(isDebugging == false){
             for(int row = 0; row < field.getDepth(); row++) {
@@ -95,7 +95,7 @@ public class Simulator {
                         int prey_random = random.nextInt(3);
                         switch (prey_random){
                             case 0:
-                                Zebra zebra = new Zebra(true, field, location, new Gene());
+                                Zebra zebra = new Zebra(true, field, location, new Gene()); 
                                 animals.add(zebra);
                                 break;
                             case 1:
@@ -114,13 +114,20 @@ public class Simulator {
                 }
             }
         }else{
-            //Zebra zebra = new Zebra(true, field, new Location(0,0), new Gene());
-            //animals.add(zebra);
+            Zebra zebra = new Zebra(true, field, new Location(0,0), new Gene());
+            animals.add(zebra);
             
+            Zebra zebra1 = new Zebra(true, field, new Location(0,1), new Gene());
+            animals.add(zebra1);
             
+            Zebra zebra2 = new Zebra(true, field, new Location(1,1), new Gene());
+            animals.add(zebra2);
             
-            //Zebra zebra1 = new Zebra(true, field, new Location(0,1));
-            //animals.add(zebra1);
+            Zebra zebra4 = new Zebra(true, field, new Location(1,1), new Gene());
+            animals.add(zebra4);
+            
+            Zebra zebra3 = new Zebra(true, field, new Location(2,1), new Gene());
+            animals.add(zebra3);
             //Deer deer = new Deer(true, field, new Location(0,1), new Gene());
             //animals.add(deer);
             //Gene gene1  = new Gene();

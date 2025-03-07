@@ -14,6 +14,7 @@ public class Zebra extends Prey
         super(randomAge, field, location, Color.BLUE, AnimalType.Zebra, gene);
         setFoodValue(3);
         //setAge(10);//
+        
     
         //setMale();
         //setBreedingAge(4);//

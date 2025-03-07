@@ -51,6 +51,7 @@ public class Prey extends Animal {
         incrementHunger();
         if(isAlive()) {
             giveBirth(newPrey);
+            
             catchRandomDisease();
             spreadDisease();
             
